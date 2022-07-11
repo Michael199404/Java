@@ -6,6 +6,9 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static java.time.temporal.TemporalAdjusters.*;
 
 public class LocalDateTest {
@@ -70,6 +73,17 @@ public class LocalDateTest {
         LocalDate date3 = now.minusMonths(2);
     }
 
+    /**
+     * 比较两个时间的大小
+     */
+    @Test
+    public void localDateTest6() {
+        LocalDate date1 = LocalDate.of(2022, 3, 8);
+        LocalDate date2 = LocalDate.of(2022, 5, 8);
+        boolean after = date1.isAfter(date2);
+        System.out.println(after);
+    }
+
     @Test
     public void durationTest() {
 
@@ -86,5 +100,69 @@ public class LocalDateTest {
     public void dateTimeFormatterTest() {
     }
 
+    @Test
+    public void testPivotIndex() {
+        int[] nums = {0, 1};
+        int index = pivotIndex(nums);
+        System.out.println(index);
+    }
+
+    public int pivotIndex(int nums[]) {
+        if (nums.length == 1) return 0;
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+        }
+        int leftSum = 0;
+        int rightSum = sum - nums[0];
+        if (leftSum == rightSum) return 0;
+        for (int i = 1; i < nums.length; i++) {
+            leftSum = leftSum + nums[i-1];
+            rightSum = rightSum - nums[i];
+            if (leftSum == rightSum) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Test
+    public void testInsert() {
+        int[] nums = {1, 3, 5, 6};
+        int result = searchInsert(nums, 2);
+        System.out.println(result);
+    }
+
+    public int searchInsert(int[] nums, int target) {
+        if (target <= nums[0]) return 0;
+        if (target == nums[nums.length-1]) return nums.length -1;
+        if (target > nums[nums.length-1]) return nums.length;
+        int l = 0;
+        int r = nums.length - 1;
+        int m = 0;
+        while (l <= r) {
+            m = (l + r) / 2;
+            if (nums[m] == target) {
+                return m;
+            } else if (target > nums[m]) {
+                l = m + 1;
+            } else {
+                r = m -1;
+            }
+        }
+        return m;
+    }
+
+    @Test
+    public void testSort() {
+        int[][] ints = new int[0][2];
+        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] intervals1, int[] intervals2) {
+                return intervals1[0] - intervals2[0];
+            }
+        });
+    }
 
 }
